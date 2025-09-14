@@ -1,0 +1,48 @@
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+import matplotlib.pyplot as plt
+import pandas as pd
+# Step 1: Sample dataset
+data = {
+    'Age': [12, 13, 14, 15, 17, 19, 20, 21, 29, 45],
+    'Gender': ["F", "F", "F", "M", "M", "F", "M", "M", "F", "M"],
+    'Eligibility': ["No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes"]
+}
+df = pd.DataFrame(data)
+# Step 2: Dealing with categorical data (Label Encoding for Gender)
+le = LabelEncoder()
+df['Gender'] = le.fit_transform(df['Gender'])   # F ? 0, M ? 1
+# Features (X) and target (y)
+X = df[['Age', 'Gender']]
+y = df['Eligibility']
+# Step 3: Scaling the features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+# Step 4: Splitting dataset into training & testing sets
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.3)
+# Step 5: Model Training
+model = DecisionTreeClassifier()
+model.fit(X_train, y_train)
+# Step 6: User Input
+age = float(input("Enter age: "))
+gender = input("Enter gender: ")
+# Encode gender input (F ? 0, M ? 1)
+gender_en = le.transform([gender])[0]
+# Create DataFrame for user input so scaler sees column names
+user_data = pd.DataFrame([[age, gender_en]], columns=["Age", "Gender"])
+user_data = scaler.transform(user_data)
+# Step 7: Prediction
+prediction = model.predict(user_data)[0]
+print(f'The prediction for age {age} and gender {gender} is {prediction}')
+
+if prediction == "Yes":
+    print("Eligible for Voting")
+else:
+    print("Not eligible for voting")
+# plt.figure(figsize=(10,3))
+# plot_tree(model,
+#           feature_names=["Age", "Gender"],
+#           class_names=["No", "Yes"],
+#           filled=True)
+# plt.show()

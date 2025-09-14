@@ -1,0 +1,38 @@
+from sklearn.feature_extraction.text import TfidfVectorizer, ENGLISH_STOP_WORDS
+from nltk.stem import PorterStemmer
+import pandas as pd
+import re
+from collections import Counter
+
+# Corpus
+corpus = [
+    "Text mining is the process of deriving meaningful information from text.",
+    "It involves preprocessing, analyzing, and interpreting textual data.",
+    "Machine learning and natural language processing are often used in text mining.",
+    "Stopwords and punctuation need to be removed in preprocessing.",
+    "Stemming helps in reducing words to their root form."
+]
+
+# Preprocessing function
+def preprocess(text):
+    # Lowercase, remove punctuation, simple split
+    tokens = re.findall(r"[\w']+", text.lower())
+    stop_words = ENGLISH_STOP_WORDS
+    stemmer = PorterStemmer()
+    cleaned_tokens = [stemmer.stem(word) for word in tokens if word.isalpha() and word not in stop_words]
+    return " ".join(cleaned_tokens)
+
+# Apply preprocessing
+cleaned_corpus = [preprocess(doc) for doc in corpus]
+
+# TF-IDF Vectorizer
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(cleaned_corpus)
+
+# Frequency distribution of words
+all_words = " ".join(cleaned_corpus).split()
+freq_dist = Counter(all_words)
+
+print("Most Common words:")
+for word, freq in freq_dist.most_common(10):
+    print(f"{word}: {freq}")

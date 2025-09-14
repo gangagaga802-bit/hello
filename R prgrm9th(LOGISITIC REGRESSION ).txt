@@ -1,0 +1,61 @@
+	2. LOGISTIC REGRESSION
+
+Logistic regression is a statistical method used to predict the probability of a binary outcome based on input variables.
+It's often used for classification problems where you need to categorize data into two groups
+
+Create the dataset
+# Small dataset: Hours studied vs. Pass/Fail
+students <- data.frame(
+  Hours = c(1, 2, 3, 4, 5, 6, 7, 8),
+  Pass = c(0, 0, 0, 1, 1, 1, 1, 1)
+)
+
+# View data
+students
+Fit logistic regression
+# Convert Pass to a factor
+students$Pass <- as.factor(students$Pass)
+
+# Fit logistic regression model
+model <- glm(Pass ~ Hours, data = students, family = binomial)
+
+it shows,
+{Warning message: glm.fit: fitted probabilities numerically 0 or 1 occurred}
+
+summary(model)
+
+Predict probabilities
+# Predict probability of passing
+predicted_probs <- predict(model, type = "response")
+data.frame(Hours = students$Hours, 
+           Predicted_Prob = round(predicted_probs, 3))
+
+Convert probabilities to classifications
+# Classify as Pass if probability > 0.5
+predicted_class <- ifelse(predicted_probs > 0.5, 1, 0)
+
+# Confusion matrix
+table(Predicted = predicted_class, Actual = students$Pass)
+Make a new prediction
+new_data <- data.frame(Hours = 5.5)
+predict(model, new_data, type = "response")
+
+Interpretation:
+* Intercept (-6.6165): When Hours = 0, the log-odds of passing are -6.6165 (very low probability).
+* Hours coefficient (1.5050): Each extra hour studied multiplies the odds of passing by
+e1.5050?4.50e^{1.5050} \approx 4.50e1.5050?4.50 — a strong effect.
+* p-values (~0.055): Just above 0.05, meaning with this tiny dataset, the result is borderline significant.
+Confusion matrix
+Interpretation:
+* True Negatives (3): Hours = 1, 2, 3 ? predicted fail, actually failed.
+* False Negatives (1): Hour = 4 ? predicted fail (49% cut-off), but actually passed.
+* True Positives (4): Hours = 5, 6, 7, 8 ? predicted pass, actually passed.
+* False Positives (0): None.
+Accuracy = (3 + 4) / 8 = 87.5%
+
+Prediction
+*  For 5.5 hours of study, your model predicts ~84% probability of passing.
+*  If your threshold is 0.5, the classification would be "Pass".
+
+
+

@@ -1,0 +1,124 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import Birch
+# Load your CSV file
+df = pd.read_csv("temperature_data.csv")
+# Select features
+X = df[["temperature", "humidity"]]
+# Create and fit the BIRCH model
+birch = Birch(n_clusters=3)
+birch.fit(X)
+# Predict clusters for the dataset
+df["cluster"] = birch.predict(X)
+# New point as a DataFrame to avoid warning
+new_point = pd.DataFrame([[28, 55]], columns=["temperature", "humidity"])
+new_cluster = birch.predict(new_point)
+print("New point belongs to cluster:", new_cluster[0])
+# Plot clusters with color mapping
+plt.scatter(df["temperature"], df["humidity"], c=df["cluster"], cmap="viridis")
+# Plot the new point as a red star
+plt.scatter(new_point["temperature"], new_point["humidity"], c="red", marker="*", label="New Point")
+# Titles and labels
+plt.title("BIRCH Clustering (Temperature vs Humidity)")
+plt.xlabel("Temperature (°C)")
+plt.ylabel("Humidity (%)")
+# Legend
+plt.legend()
+plt.grid(False) # Remove grid to match your desired output style
+# Show plot
+plt.show()
+
+save the below dataset name as temperature_data.csv
+
+temperature,humidity
+23.7,81.5
+24.1,83.2
+25.4,82.1
+23.9,84.0
+24.6,80.5
+25.0,82.8
+26.1,83.3
+23.8,81.0
+25.2,84.5
+24.9,82.3
+26.0,81.7
+23.6,83.6
+24.3,80.7
+25.8,82.0
+24.7,84.1
+26.3,81.2
+25.1,83.7
+23.5,82.5
+24.0,81.9
+25.3,83.0
+26.2,84.2
+23.9,80.9
+24.4,82.7
+25.5,83.4
+26.4,81.8
+23.7,83.1
+24.8,80.6
+25.6,82.9
+26.5,84.3
+23.6,81.4
+30.1,64.3
+31.2,62.5
+32.0,61.8
+30.4,63.9
+31.7,60.7
+32.1,62.0
+30.9,63.5
+31.5,61.1
+32.2,64.0
+30.7,62.9
+31.0,63.3
+32.3,61.7
+30.6,63.0
+31.3,62.4
+32.4,60.8
+30.8,62.7
+31.1,63.1
+32.5,61.3
+30.2,64.1
+31.4,62.2
+32.6,63.7
+30.3,61.5
+31.6,63.6
+32.7,62.8
+30.0,64.4
+31.8,61.9
+32.8,62.3
+30.5,63.2
+31.9,61.6
+32.9,62.6
+37.2,42.1
+38.4,40.7
+39.0,43.3
+37.5,41.9
+38.7,39.8
+39.2,40.5
+37.9,41.1
+38.1,42.4
+39.1,40.0
+37.6,41.5
+38.2,40.8
+39.3,42.0
+37.4,41.3
+38.3,40.4
+39.4,42.3
+37.7,41.7
+38.0,39.9
+39.5,41.6
+37.3,40.6
+38.5,41.2
+39.6,40.3
+37.8,42.2
+38.6,40.1
+39.7,41.4
+37.1,39.7
+38.8,41.0
+39.8,40.9
+37.0,41.8
+38.9,42.5
+39.9,40.2

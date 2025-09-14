@@ -1,0 +1,67 @@
+	1. DATA EXPLORATION IN R
+
+1.Load the Iris Dataset
+data(iris)
+
+2. Data Exploration
+# Check the structure of the Iris dataset
+str(iris)
+# Summary statistics for the Iris dataset
+summary(iris)
+# View the first few rows
+head(iris)
+# Check for missing values in the Iris dataset
+colSums(is.na(iris))
+# Check column types
+sapply(iris, class)
+
+3. Statistical Functions
+# Descriptive statistics using the psych package
+install.packages(“psych”) 
+library(psych)
+describe(iris[, -5])  # Exclude the "Species" column since it's categorical
+
+# Compute a correlation matrix for the numeric variables
+cor_matrix <- cor(iris[, 1:4])
+print(cor_matrix)
+	
+4. Data Visualization
+Distribution of a Variable (Histogram)
+# Histogram for Sepal Length
+install.packages(“ggplot2”) 
+library(ggplot2)
+ggplot(iris, aes(x = Sepal.Length)) + 
+  geom_histogram(binwidth = 0.2, fill = "blue", color = "black", alpha = 0.7) + 
+  labs(title = "Distribution of Sepal Length", x = "Sepal Length", y = "Frequency")
+#Scatter Plot (Correlation between two variables)
+# Scatter plot between Sepal.Length and Sepal.Width
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point(aes(color = Species)) +  # Color by species
+  labs(title = "Sepal Length vs Sepal Width", x = "Sepal Length", y = "Sepal Width")
+
+5. Advanced Statistical Tests
+Linear Regression (Sepal.Length as a function of other variables)
+# Linear regression model to predict Sepal.Length based on other variables
+lm_model <- lm(Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width, data = iris)
+summary(lm_model)
+
+ANOVA (Comparing means of Sepal Length across Species)
+# One-way ANOVA to compare Sepal Length between different species
+anova_model <- aov(Sepal.Length ~ Species, data = iris)
+summary(anova_model)
+
+K means clustering
+# K-means clustering for 3 clusters (since there are 3 species in the dataset)
+set.seed(123)
+kmeans_model <- kmeans(iris[, 1:4], centers = 3)
+iris$cluster <- as.factor(kmeans_model$cluster)
+
+
+
+# Visualize the clusters
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = cluster)) +
+  geom_point() +
+  labs(title = "K-means Clusters of Iris Dataset", x = "Sepal Length", y = "Sepal Width")
+
+
+

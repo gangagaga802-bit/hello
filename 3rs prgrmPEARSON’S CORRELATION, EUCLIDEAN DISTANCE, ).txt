@@ -1,0 +1,49 @@
+import pandas as pd
+from scipy.stats import pearsonr
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Load dataset (kept simple, no path needed)
+df = pd.read_csv("study_hr-marks.csv").dropna()
+
+# Select variables
+var1 = df['Marks']
+var2 = df['Hours']
+
+# Pearson Correlation
+correlation, p_value = pearsonr(var1, var2)
+print(f"Pearson Correlation: {round(correlation, 3)}")
+
+if correlation >= 0.5:
+    print("The relationship between two variables are strongly related: Positive Correlation")
+elif correlation < -0.5:
+    print("The relationship between two variables are strongly related: Negative Correlation")
+else:
+    print("No correlation")
+
+# -----------------------------
+# Distance measures
+# -----------------------------
+p1 = np.array([2, 3])
+p2 = np.array([7, 8])
+
+# Euclidean Distance
+euclidean = np.sqrt(np.sum((p2 - p1) ** 2))
+
+# Manhattan Distance
+manhattan = np.sum(np.abs(p2 - p1))
+
+print(f"Euclidean Distance: {round(euclidean, 3)}")
+print(f"Manhattan Distance: {manhattan}")
+
+ save the below dataset in note pad name as study_hr-marks.csv
+Hours,Marks
+6,75
+7,82
+8,86
+9,97
+6,68
+2,51
+2,54
+3,61
+1,41
