@@ -1,0 +1,16 @@
+View(iris)
+dim(iris)
+str(iris)
+names(iris)
+attributes(iris)
+head(iris)
+tail(iris)
+summary(iris)
+mean(iris$Sepal.Length)
+median(iris$Sepal.Length)
+cov(iris$Sepal.Length,iris$Sepal.Width)
+plot(density(iris$Sepal.Length))
+hist(iris$Sepal.Length)
+table(iris$Sepal.Length)
+
+
